@@ -1,5 +1,8 @@
 # Changes
 
+## 0.7.1 (23/02/2024)
+* Initial relase of fork for Tasmania.
+
 ## 0.7 (26/01/2024)
 * Bumped version of upstream aio_geojson_client library to 0.20.
 * Improved JSON parsing error handling, especially when not using Python's built-in JSON parsing library.
