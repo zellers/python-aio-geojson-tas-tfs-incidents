@@ -1,13 +1,13 @@
-"""Setup of aio_geojson_nsw_rfs_incidents library."""
+"""Setup of aio_geojson_tas_tfs_incidents library."""
 import os
 
 from setuptools import find_packages, setup
 
-NAME = "aio_geojson_nsw_rfs_incidents"
-AUTHOR = "Malte Franken"
-AUTHOR_EMAIL = "coding@subspace.de"
-DESCRIPTION = "An async GeoJSON client library for NSW Rural Fire Service Incidents."
-URL = "https://github.com/exxamalte/python-aio-geojson-nsw-rfs-incidents"
+NAME = "aio_geojson_tas_tfs_incidents"
+AUTHOR = "Malte Franken, Daniel Zeller"
+AUTHOR_EMAIL = "geojson_tas@zeller.cx"
+DESCRIPTION = "An async GeoJSON client library for TAS Fire Service Incidents."
+URL = "https://github.com/zellers/python-aio-geojson-tas-tfs-incidents"
 
 REQUIRES = [
     "aio_geojson_client>=0.20",

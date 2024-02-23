@@ -39,14 +39,14 @@ jobs:
             --timeout=9 \
             --durations=10 \
             -n auto \
-            --cov aio_geojson_nsw_rfs_incidents \
+            --cov aio_geojson_tas_tfs_incidents \
             --cov-report xml \
             -o console_output_style=count \
             -p no:sugar \
             tests
           python -m coverage xml
-      - name: "Upload coverage to Codecov"
-        if: "contains(env.USING_COVERAGE, matrix.python-version)"
-        uses: "codecov/codecov-action@v1"
-        with:
-          fail_ci_if_error: true
+      # - name: "Upload coverage to Codecov"
+      #   if: "contains(env.USING_COVERAGE, matrix.python-version)"
+      #   uses: "codecov/codecov-action@v1"
+      #   with:
+      #     fail_ci_if_error: true

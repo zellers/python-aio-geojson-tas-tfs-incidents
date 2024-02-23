@@ -1,14 +1,13 @@
-# python-aio-geojson-nsw-rfs-incidents
+# python-aio-geojson-tas-tfs-incidents
 
-[![Build Status](https://github.com/exxamalte/python-aio-geojson-nsw-rfs-incidents/workflows/CI/badge.svg?branch=master)](https://github.com/exxamalte/python-aio-geojson-nsw-rfs-incidents/actions?workflow=CI)
-[![codecov](https://codecov.io/gh/exxamalte/python-aio-geojson-nsw-rfs-incidents/branch/master/graph/badge.svg?token=7G2BWWSYRZ)](https://codecov.io/gh/exxamalte/python-aio-geojson-nsw-rfs-incidents)
-[![PyPi](https://img.shields.io/pypi/v/aio-geojson-nsw-rfs-incidents.svg)](https://pypi.python.org/pypi/aio-geojson-nsw-rfs-incidents)
-[![Version](https://img.shields.io/pypi/pyversions/aio-geojson-nsw-rfs-incidents.svg)](https://pypi.python.org/pypi/aio-geojson-nsw-rfs-incidents)
+[![Build Status](https://github.com/zellers/python-aio-geojson-tas-tfs-incidents/workflows/CI/badge.svg?branch=master)](https://github.com/zellers/python-aio-geojson-tas-tfs-incidents/actions?workflow=CI)
+[![PyPi](https://img.shields.io/pypi/v/aio-geojson-tas-tfs-incidents.svg)](https://test.pypi.org/project/aio-geojson-tas-tfs-incidents)
+[![Version](https://img.shields.io/pypi/pyversions/aio-geojson-tas-tfs-incidents.svg)](https://test.pypi.org/project/aio-geojson-tas-tfs-incidents)
 
-This library provides convenient async access to the [NSW Rural Fire Service](https://www.rfs.nsw.gov.au/fire-information/fires-near-me) incidents feed.
+This library is a fork of [python-aio-geojson-nsw-rfs-incidents](https://github.com/exxamalte/python-aio-geojson-nsw-rfs-incidents) for convenient async access to the [Tas Alert Feed](https://alert.tas.gov.au/).
  
 ## Installation
-`pip install aio-geojson-nsw-rfs-incidents`
+`pip install aio-geojson-tas-tfs-incidents`
 
 ## Usage
 See below for examples of how this library can be used. After instantiating a 
@@ -42,16 +41,17 @@ Status Codes
 ```python
 import asyncio
 from aiohttp import ClientSession
-from aio_geojson_nsw_rfs_incidents import NswRuralFireServiceIncidentsFeed
+from aio_geojson_tas_tfs_incidents import TasFireServiceIncidentsFeed
 async def main() -> None:
     async with ClientSession() as websession:    
-        # Home Coordinates: Latitude: -33.0, Longitude: 150.0
+        # Home Coordinates: Latitude: -42.0, Longitude: 147.0
         # Filter radius: 50 km
         # Filter categories: 'Advice'
-        feed = NswRuralFireServiceIncidentsFeed(websession, 
-                                                (-33.0, 150.0), 
+        feed = TasFireServiceIncidentsFeed(websession, 
+                                                (-42, 147.0), 
                                                 filter_radius=50, 
-                                                filter_categories=['Advice'])
+                                                filter_feedtypes=['warning'],
+                                                filter_alertlevels=['watch_and_act', 'advice'])
         status, entries = await feed.update()
         print(status)
         print(entries)
@@ -62,23 +62,23 @@ asyncio.get_event_loop().run_until_complete(main())
 Each feed entry is populated with the following properties:
 
 | Name               | Description                                                                                         | Feed attribute |
-|--------------------|-----------------------------------------------------------------------------------------------------|----------------|
-| geometry           | All geometry details of this entry.                                                                 | `geometry`     |
-| coordinates        | Best coordinates (latitude, longitude) of this entry.                                               | `geometry`     |
-| external_id        | The unique public identifier for this incident.                                                     | `guid`         |
-| title              | Title of this entry.                                                                                | `title`        |
-| attribution        | Attribution of the feed.                                                                            | n/a            |
-| distance_to_home   | Distance in km of this entry to the home coordinates.                                               | n/a            |
-| category           | The alert level of the incident ('Emergency Warning', 'Watch and Act', 'Advice','Not Applicable').  | `category`     |
-| publication_date   | The publication date of the incidents.                                                              | `pubDate`      |
-| description        | The description of the incident.                                                                    | `description`  |
-| location           | Location description of the incident.                                                               | `description` -> `LOCATION`            |
-| council_area       | Council are this incident falls into.                                                               | `description` -> `COUNCIL AREA`        |
-| status             | Status of the incident.                                                                             | `description` -> `STATUS`              |
-| type               | Type of the incident (e.g. Bush Fire, Grass Fire, Hazard Reduction).                                | `description` -> `TYPE`                |
-| fire               | Indicated if this incident is a fire or not (`True`/`False`).                                       | `description` -> `FIRE`                |
-| size               | Size in ha.                                                                                         | `description` -> `SIZE`                |
-| responsible_agency | Agency responsible for this incident.                                                               | `description` -> `RESPONSIBLE AGENCY`  |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------|
+| geometries         | All geometry details of this entry.                                                                                                        | `geometries`   |
+| coordinates        | Best coordinates (latitude, longitude) of this entry.                                                                                      | `geometries`   |
+| external_id        | The unique public identifier for this incident.                                                                                            | `id`           |
+| title              | Title of this entry.                                                                                                                       | `title`        |
+| attribution        | Attribution of the feed.                                                                                                                   | n/a            |
+| distance_to_home   | Distance in km of this entry to the home coordinates.                                                                                      | n/a            |
+| feedType           | The type of messages ('incident', 'warning').                                                                                              | `feedType`     |
+| alertLevel         | The alert level of the incident ("emergency_warning", "watch_and_act", "advice", "not_applicable"). Only available for feedType 'warning'. | `category`     |
+| created            | The creation date of the incident.                                                                                                         | `created`      |
+| changed            | The last changed date of the incident.                                                                                                     | `changed`      |
+| bodyHtml           | The description of the incident including HTML tags.                                                                                       | `bodyHtml`     |
+| description        | The description of the incident without HTML tags.                                                                                         | n/a            |
+| location           | Location description of the incident.                                                                                                      | `location`     |
+| status             | Status of the incident.                                                                                                                    | `status`       |
+| type               | Type of the incident (e.g. Bush Fire, Grass Fire, Hazard Reduction).                                                                       | `type`['name'] |
+| burntArea          | Burnt area in ha.                                                                                                                          | `burntArea`    |
 
 
 ## Feed Manager

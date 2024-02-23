@@ -3,7 +3,7 @@ target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
 
 [tool.isort]
 profile = "black"
-src_paths = ["aio_geojson_nsw_rfs_incidents", "tests"]
+src_paths = ["aio_geojson_tas_tfs_incidents", "tests"]
 
 [tool.ruff]
 target-version = "py38"

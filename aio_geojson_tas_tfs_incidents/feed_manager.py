@@ -1,4 +1,4 @@
-"""Feed Manager for NSW Rural Fire Service Incidents feed."""
+"""Feed Manager for TAS Fire Service Incidents feed."""
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
@@ -7,11 +7,11 @@ from aio_geojson_client.feed_manager import FeedManagerBase
 from aio_geojson_client.status_update import StatusUpdate
 from aiohttp import ClientSession
 
-from .feed import NswRuralFireServiceIncidentsFeed
+from .feed import TasFireServiceIncidentsFeed
 
 
-class NswRuralFireServiceIncidentsFeedManager(FeedManagerBase):
-    """Feed Manager for NSW Rural Fire Services Incidents feed."""
+class TasFireServiceIncidentsFeedManager(FeedManagerBase):
+    """Feed Manager for TAS Fire Services Incidents feed."""
 
     def __init__(
         self,
@@ -21,15 +21,17 @@ class NswRuralFireServiceIncidentsFeedManager(FeedManagerBase):
         remove_callback: Callable[[str], Awaitable[None]],
         coordinates: tuple[float, float],
         filter_radius: float = None,
-        filter_categories: list[str] = None,
+        filter_feedtypes: list[str] = None,
+        filter_alertlevels: list[str] = None,
         status_callback: Callable[[StatusUpdate], Awaitable[None]] = None,
     ):
-        """Initialize the NSW Rural Fire Services Feed Manager."""
-        feed = NswRuralFireServiceIncidentsFeed(
+        """Initialize the TAS Fire Services Feed Manager."""
+        feed = TasFireServiceIncidentsFeed(
             websession,
             coordinates,
             filter_radius=filter_radius,
-            filter_categories=filter_categories,
+            filter_feedtypes=filter_feedtypes,
+            filter_alertlevels=filter_alertlevels,
         )
         super().__init__(
             feed,

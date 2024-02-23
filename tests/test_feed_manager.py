@@ -1,4 +1,4 @@
-"""Test for the NSW Rural Fire Service Incidents GeoJSON feed manager."""
+"""Test for the TAS Fire Service Incidents GeoJSON feed manager."""
 import asyncio
 import datetime
 from http import HTTPStatus
@@ -6,8 +6,8 @@ from http import HTTPStatus
 import aiohttp
 import pytest
 
-from aio_geojson_nsw_rfs_incidents.feed_manager import (
-    NswRuralFireServiceIncidentsFeedManager,
+from aio_geojson_tas_tfs_incidents.feed_manager import (
+    TasFireServiceIncidentsFeedManager,
 )
 from tests.utils import load_fixture
 
@@ -15,9 +15,9 @@ from tests.utils import load_fixture
 @pytest.mark.asyncio
 async def test_feed_manager(mock_aioresponse):
     """Test the feed manager."""
-    home_coordinates = (-31.0, 151.0)
+    home_coordinates = (-42, 147.0)
     mock_aioresponse.get(
-        "https://www.rfs.nsw.gov.au/feeds/majorIncidents.json",
+        "https://alert.tas.gov.au/data/data.geojson",
         status=HTTPStatus.OK,
         body=load_fixture("incidents-1.json"),
     )
@@ -40,7 +40,7 @@ async def test_feed_manager(mock_aioresponse):
             """Remove entity."""
             removed_entity_external_ids.append(external_id)
 
-        feed_manager = NswRuralFireServiceIncidentsFeedManager(
+        feed_manager = TasFireServiceIncidentsFeedManager(
             websession,
             _generate_entity,
             _update_entity,
@@ -49,22 +49,22 @@ async def test_feed_manager(mock_aioresponse):
             None,
         )
         assert (
-            repr(feed_manager) == "<NswRuralFireServiceIncidents"
+            repr(feed_manager) == "<TasFireServiceIncidents"
             "FeedManager("
-            "feed=<NswRuralFireService"
+            "feed=<TasFireService"
             "IncidentsFeed("
-            "home=(-31.0, 151.0), url=https://"
-            "www.rfs.nsw.gov.au"
-            "/feeds/majorIncidents.json, "
+            "home=(-42, 147.0), url=https://"
+            "alert.tas.gov.au"
+            "/data/data.geojson, "
             "radius=None, categories=None)>)>"
         )
         await feed_manager.update()
         entries = feed_manager.feed_entries
         assert entries is not None
-        assert len(entries) == 4
+        assert len(entries) == 3
         assert feed_manager.last_timestamp == datetime.datetime(
-            2018, 9, 21, 6, 40, tzinfo=datetime.timezone.utc
+            2024, 2, 23, 5, 3, tzinfo=datetime.timezone.utc
         )
-        assert len(generated_entity_external_ids) == 4
+        assert len(generated_entity_external_ids) == 3
         assert len(updated_entity_external_ids) == 0
         assert len(removed_entity_external_ids) == 0
