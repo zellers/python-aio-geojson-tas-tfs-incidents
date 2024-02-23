@@ -1,6 +1,6 @@
 # python-aio-geojson-tas-tfs-incidents
 
-[![Build Status](https://github.com/zellers/python-aio-geojson-tas-tfs-incidents/workflows/CI/badge.svg?branch=master)](https://github.com/zellers/python-aio-geojson-tas-tfs-incidents/actions?workflow=CI)
+[![Build Status](https://github.com/zellers/python-aio-geojson-tas-tfs-incidents/workflows/CI/badge.svg)](https://github.com/zellers/python-aio-geojson-tas-tfs-incidents/actions?workflow=CI)
 [![PyPi](https://img.shields.io/pypi/v/aio-geojson-tas-tfs-incidents.svg)](https://test.pypi.org/project/aio-geojson-tas-tfs-incidents)
 [![Version](https://img.shields.io/pypi/pyversions/aio-geojson-tas-tfs-incidents.svg)](https://test.pypi.org/project/aio-geojson-tas-tfs-incidents)
 
